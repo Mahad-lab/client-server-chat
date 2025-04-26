@@ -1,7 +1,26 @@
+const express = require('express');
 const WebSocket = require('ws');
+const path = require('path');
 
-// Create a WebSocket server
-const wss = new WebSocket.Server({ port: 8080 });
+// Create Express app
+const app = express();
+const port = process.env.PORT || 8080;
+
+// Serve static files from the current directory
+// app.use(express.static(path.join(__dirname)));
+
+// Serve index.html
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client.html'));
+});
+
+// Create HTTP server
+const server = app.listen(port, () => {
+    console.log(`HTTP server running on http://localhost:${port}`);
+});
+
+// Create WebSocket server attached to HTTP server
+const wss = new WebSocket.Server({ server });
 const users = new Set();
 
 wss.on('connection', (ws) => {

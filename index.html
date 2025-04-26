@@ -145,7 +145,7 @@
         const connectionStatus = document.getElementById('connection-status');
 
         let username = '';
-        const socket = new WebSocket('ws://localhost:8080');
+        const socket = new WebSocket(`${location.protocol === 'https:' ? 'wss:' : 'ws:'}//${location.host}`);
 
         // Add connection error handling
         socket.onerror = (error) => {
